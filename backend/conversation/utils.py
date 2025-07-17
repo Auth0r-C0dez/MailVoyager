@@ -1,5 +1,5 @@
 # backend/conversation/utils.py
-
+#this was used only during the base model creation
 from dotenv import load_dotenv
 import os
 
