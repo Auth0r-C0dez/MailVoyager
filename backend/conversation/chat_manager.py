@@ -39,7 +39,7 @@ class ChatManager:
     def next_prompt(self) -> str:
         """Return the next question based on the current step."""
         prompts = {
-            0: "🤖 What would you like me to do?",
+            0: "🤖 What's in your mind?",
             1: "📨 Who should the leave email be sent to?",
             2: "📅 What date(s) are you requesting leave for?",
             3: "📝 What's the reason for your leave?"
@@ -53,7 +53,7 @@ class ChatManager:
 
     def generate_email(self):
         """Use the LLM-based template to produce subject and body."""
-        name = "User"  # Generic name since we don't collect email anymore
+        name = "User"  
         dates = self.memory["leave_date"]
         reason = self.memory["leave_reason"]
         return format_leave_email(name=name, dates=dates, reason=reason)
