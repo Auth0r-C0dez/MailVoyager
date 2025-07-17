@@ -55,7 +55,7 @@ def handle_security_challenge(page):
     return False
 
 def main():
-    # Expect exactly 3 arguments: recipient, subject, body (no email/password needed)
+    
     if len(sys.argv) != 4:
         print("Usage: python browser_task.py <recipient> <subject> <body>", file=sys.stderr)
         sys.exit(1)
@@ -82,7 +82,7 @@ def main():
             )
             page = context.new_page()
             
-            # Navigate directly to Gmail (assuming user is already logged in)
+            # Navigate directly to Gmail 
             logger.info("Navigating to Gmail inbox (assuming already logged in)")
             page.goto("https://mail.google.com/mail/u/0/#inbox", timeout=60000)
             
@@ -101,9 +101,9 @@ def main():
                 else:
                     raise Exception("Gmail inbox not detected")
             
-            # Skip login - assuming user is already logged in to Gmail
             
-            # 2️⃣ Click Compose
+            
+            # 2️⃣ Clicking Compose
             logger.info("Step 2: Opening compose window")
             compose_selectors = [
                 "[data-tooltip='Compose']",
