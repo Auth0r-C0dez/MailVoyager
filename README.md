@@ -110,11 +110,16 @@ Open `http://localhost:8000` in your browser
    - Isolated browser contexts per session
    - Proper resource cleanup
 
+4. **Python compatability with Playwright**
+   - Had to shift between multiple versions of python in order to find the right version.
+   - Finally python python-3.10.11 was the right fit
+
 ## Future Extensions
 - Multi-website support
-- Voice command integration
+- Voice command integration (to be added)
 - Cross-browser compatibility
 - Plugin system for new actions
 
 ---
 *This solution demonstrates true browser automation - no email APIs were used in accordance with assignment requirements.*
+## Made with HaRd WoRk by Rana Talukdar
