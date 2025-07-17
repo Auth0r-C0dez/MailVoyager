@@ -3,7 +3,7 @@
 import requests
 
 # Replace with your actual OpenRouter API key
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "enter_your_API"
 
 def format_leave_email(name: str, dates: str, reason: str = "personal leave") -> tuple[str, str]:
     """
@@ -51,7 +51,7 @@ def format_leave_email(name: str, dates: str, reason: str = "personal leave") ->
 
     except Exception as e:
         # Log the error for debugging
-        print(f"❌ LLM Error in format_leave_email: {e}")
+        print(f"Sorrrie!!!!!!!!!! LLM Error in format_leave_email: {e}")
         # Fallback template
         subject = f"Leave Application for {dates}"
         body = (
