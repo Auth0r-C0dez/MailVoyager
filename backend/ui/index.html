@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Browser Agent</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f2f2f2;
+    }
+    .chat-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .message {
+      margin: 10px 0;
+      line-height: 1.4;
+    }
+    .user {
+      text-align: right;
+      color: #2b7a78;
+    }
+    .agent {
+      text-align: left;
+      color: #17252a;
+    }
+    .screenshot {
+      max-width: 100%;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .input-row {
+      display: flex;
+      margin-top: 20px;
+    }
+    #userInput {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      font-size: 16px;
+      background: #3aafa9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #96d4d1;
+      cursor: not-allowed;
+    }
+    .loading {
+      color: #888;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container" id="chat">
+    <div class="message agent">🤖 Hello! What would you like me to do?</div>
+  </div>
+
+  <div class="chat-container input-row">
+    <input type="text" id="userInput" placeholder="Type a message..." autocomplete="off" />
+    <button id="sendBtn" onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const sendBtn = document.getElementById("sendBtn");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chat = document.getElementById("chat");
+
+      // Show user message
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.textContent = text;
+      chat.appendChild(userMsg);
+
+      // Clear input, disable button, and show loading
+      input.value = "";
+      sendBtn.disabled = true;
+      const loading = document.createElement("div");
+      loading.className = "message agent loading";
+      loading.textContent = "🤔 Thinking...";
+      chat.appendChild(loading);
+      chat.scrollTop = chat.scrollHeight;
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text }),
+        });
+
+        const data = await res.json();
+        chat.removeChild(loading);
+
+        // Display AI response from `data.reply`
+        const botMsg = document.createElement("div");
+        botMsg.className = "message agent";
+        botMsg.textContent = data.reply || "✅ Done.";
+        chat.appendChild(botMsg);
+
+        // Display screenshot if present
+        if (data.screenshot) {
+          const img = document.createElement("img");
+          img.className = "screenshot";
+          img.src = "data:image/png;base64," + data.screenshot;
+          chat.appendChild(img);
+        }
+
+      } catch (err) {
+        console.error("❌ Backend error:", err);
+        const errorMsg = document.createElement("div");
+        errorMsg.className = "message agent";
+        errorMsg.textContent = "❌ Failed to connect to backend.";
+        chat.appendChild(errorMsg);
+      } finally {
+        sendBtn.disabled = false;
+        chat.scrollTop = chat.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>
